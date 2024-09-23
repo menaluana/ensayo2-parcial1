@@ -1,0 +1,315 @@
+  MAIN
+
+public class Main {
+    public static void main(String[] args) {
+        Vehiculo vehiculo1 = new Auto("AA300BC","RENAULT","AGILE",1.2,4,15,"MANUAL");
+        Vehiculo vehiculo2 = new Auto("AA111BC","PEUGEOT","208",1.5,5,15,"AUTOMATICO");
+        Vehiculo moto1 = new Moto("AA2341A","HONDA","TORNADO", 0.3, 2, 7, 200,true);
+        Vehiculo moto2 = new Moto("AA5671A","HONDA","WAVE", 0.2, 2, 7, 100,false);
+
+        GestionInventario inventarioUnico = new GestionInventario();
+
+        inventarioUnico.agregar(vehiculo1);
+        inventarioUnico.agregar(vehiculo2);
+        inventarioUnico.agregar(moto1);
+        inventarioUnico.agregar(moto2);
+
+        System.out.println(inventarioUnico.buscarPorPatente("AA300BC"));
+        System.out.println(inventarioUnico.contar());
+        System.out.println(inventarioUnico.totalInventarioPrecio());
+        System.out.println(inventarioUnico.eliminarPorPatente("AA111BC"));
+        System.out.println(inventarioUnico.contar());
+        System.out.println(inventarioUnico.totalInventarioPrecio());
+    }
+}
+
+CLASE GESTIONINVENTARIO
+
+import java.util.ArrayList;
+import java.util.ListIterator;
+
+public class GestionInventario extends Vehiculo{
+   protected ArrayList<Vehiculo> inventario = new ArrayList<>();
+
+    public void agregar (Vehiculo vehiculo1){
+        inventario.add(vehiculo1); //AGREGA AL ARRAYLIST
+    }
+
+    public String buscarPorPatente (String patenteAbuscar){
+        boolean encontrado = false;
+        for (int i = 0; i < inventario.size(); i++) { //RECORRE EL ARRAYLIST
+            if (inventario.get(i).patente.equals(patenteAbuscar)){ //SI COINCIDEN LAS MATENTES
+                encontrado = true;
+
+            }
+        }
+        return "SI EL VALOR MOSTRADO A CONTINUACION ES 1 O TRUE, LA PATENTE FUE ENCONTRADA: " + encontrado + "(en caso de ser 0 o false esta no se encuentra en el inventario)";
+    }
+
+    public String contar (){
+        int contador = inventario.size();
+        return "El inventario tiene" + contador + "Vehiculos";
+    }
+
+    public void mostrarListado (){
+        ListIterator<Vehiculo> iterator = inventario.listIterator();
+        while (iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
+    }
+
+    public String eliminarPorPatente (String patenteAborrar){
+        boolean borrado = false;
+        for (int i = 0; i < inventario.size(); i++) {
+            if (inventario.get(i).patente.equalsIgnoreCase(patenteAborrar)){ //Ignora si son mayusculas o minusculas
+                inventario.remove(i);
+                borrado = true;
+            }
+        }
+        return "SI EL VALOR MOSTRADO A CONTINUACION ES 1 O TRUE, LA PATENTE FUE ELIMINADA: " + borrado +  "(en caso de ser 0 o false esta no fue borrada)";
+    }
+
+    public String totalInventarioPrecio (){
+        int contadorPrecios = 0;
+        for (int i = 0; i < inventario.size(); i++) {
+            contadorPrecios += inventario.get(i).precio;
+        }
+        return "El total del inventaqrio es de  $" + contadorPrecios;
+    }
+
+}
+
+CLASE VEHICULO
+
+import java.util.Objects;
+
+public abstract class Vehiculo {
+   protected String patente;
+    protected String marca;
+    protected String modelo;
+    protected double consumoCombustible;
+    protected int cantidadRuedas;
+    protected int precio;
+
+    public String getPatente() {
+        return patente;
+    }
+
+    public void setPatente(String patente) {
+        this.patente = patente;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public double getConsumoCombustible() {
+        return consumoCombustible;
+    }
+
+    public void setConsumoCombustible(double consumoCombustible) {
+        this.consumoCombustible = consumoCombustible;
+    }
+
+    public int getCantidadRuedas() {
+        return cantidadRuedas;
+    }
+
+    public void setCantidadRuedas(int cantidadRuedas) {
+        this.cantidadRuedas = cantidadRuedas;
+    }
+
+    public int getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(int precio) {
+        this.precio = precio;
+    }
+
+    public Vehiculo(String patente, String marca, String modelo, double consumoCombustible, int cantidadRuedas, int precio) {
+        this.patente = patente;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.consumoCombustible = consumoCombustible;
+        this.cantidadRuedas = cantidadRuedas;
+        this.precio = precio;
+    }
+    public Vehiculo() {
+        this.patente = "NoDefinido";
+        this.marca = "NoDefinido";
+        this.modelo = "NoDefinido";
+        this.consumoCombustible = 0.00;
+        this.cantidadRuedas = 0;
+        this.precio = 0;
+    }
+
+  /*  @Override
+    public String toString() {
+        return "Vehiculo{" +
+                "patente='" + patente + '\'' +
+                ", marca='" + marca + '\'' +
+                ", modelo='" + modelo + '\'' +
+                ", consumoCombustible=" + consumoCombustible +
+                ", cantidadRuedas=" + cantidadRuedas +
+                ", precio=" + precio +
+                '}';
+    }*/
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vehiculo vehiculo = (Vehiculo) o;
+        return Objects.equals(patente, vehiculo.patente);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(patente);
+    }
+}
+
+CLASE AUTO
+
+import java.util.ArrayList;
+
+public class Auto extends Vehiculo{
+    protected ArrayList<String> prestaciones = new ArrayList<>();
+    protected String modoPasarCambios;
+
+    public String getModoPasarCambios() {
+        return modoPasarCambios;
+    }
+
+    public void setModoPasarCambios(String modoPasarCambios) {
+        this.modoPasarCambios = modoPasarCambios;
+    }
+
+    public Auto(String patente, String marca, String modelo, double consumoCombustible, int cantidadRuedas, int precio, String modoPasarCambios) {
+        super(patente, marca, modelo, consumoCombustible, cantidadRuedas, precio);
+        this.prestaciones = new ArrayList<>();
+        this.modoPasarCambios = modoPasarCambios;
+    }
+
+    public Auto(String modoPasarCambios) {
+        this.modoPasarCambios = "NoDefinido";
+    }
+    public void agregarPrestaciones (ArrayList<String> prestaciones, String prestacion){
+        prestaciones.add(prestacion);
+    }
+
+  /*  @Override
+   public String toString() {
+        return "Auto{" +
+                "prestaciones=" + prestaciones +
+                ", modoPasarCambios='" + modoPasarCambios + '\'' +
+                '}';
+    }*/
+}
+
+CLASE MOTO
+
+public class Moto extends Vehiculo{
+    protected int cilindrada;
+    protected boolean baulOno;
+
+    public int getCilindrada() {
+        return cilindrada;
+    }
+
+    public void setCilindrada(int cilindrada) {
+        this.cilindrada = cilindrada;
+    }
+
+    public boolean isBaulOno() {
+        return baulOno;
+    }
+
+    public void setBaulOno(boolean baulOno) {
+        this.baulOno = baulOno;
+    }
+
+    public Moto(String patente, String marca, String modelo, double consumoCombustible, int cantidadRuedas, int precio, int cilindrada, boolean baulOno) {
+        super(patente, marca, modelo, consumoCombustible, cantidadRuedas, precio);
+        this.cilindrada = cilindrada;
+        this.baulOno = baulOno;
+    }
+
+    public Moto(int cilindrada, boolean baulOno) {
+        this.cilindrada = 0;
+        this.baulOno = false;
+    }
+
+  /*  @Override
+    public String toString() {
+        return "Moto{" +
+                "cilindrada=" + cilindrada +
+                ", baulOno=" + baulOno +
+                '}';
+    }*/
+}
+
+
+CLASE YATES
+
+public class Yate implements iPrecio {
+    protected String color;
+    protected String nombre;
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Yate(String color, String nombre) {
+        this.color = color;
+        this.nombre = nombre;
+    }
+    public Yate() {
+        this.color = "NoDefinido";
+        this.nombre = "NoDefinido";
+    }
+
+    @Override
+    public String toString() {
+        return "Yate{" +
+                "color='" + color + '\'' +
+                ", nombre='" + nombre + '\'' +
+                '}';
+    }
+
+    @Override
+    public String calcularPrecio() {
+        return "100";
+    }
+}
+
+INTERFAZ CALCULAR PRECIO
+
+public interface iPrecio {
+    public String calcularPrecio();
+}
