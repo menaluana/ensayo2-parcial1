@@ -1,0 +1,327 @@
+CLASE CARGA
+public class Carga extends Vehiculo implements iMantenimiento {
+    private int capacidadMaxima;
+    private EUnidad unidad;
+
+    public int getCapacidadMaxima() {
+        return capacidadMaxima;
+    }
+
+    public void setCapacidadMaxima(int capacidadMaxima) {
+        this.capacidadMaxima = capacidadMaxima;
+    }
+
+    public EUnidad getUnidad() {
+        return unidad;
+    }
+
+    public void setUnidad(EUnidad unidad) {
+        this.unidad = unidad;
+    }
+
+    public Carga(String modelo, EMarca marca, String patente, int velocidad, int kilimetraje, int capacidadMaxima, EUnidad unidad) {
+        super(modelo, marca, patente, velocidad, kilimetraje);
+        this.capacidadMaxima = capacidadMaxima;
+        this.unidad = unidad;
+    }
+
+    public Carga() {
+        this.capacidadMaxima = 0;
+        this.unidad = EUnidad.KILOGRAMOS;
+    }
+
+    @Override
+    public void actualizar(int velocidadRecomendada, int kms, int cantidad) {
+        this.capacidadMaxima = cantidad;
+        this.setKilimetraje(kms);
+        this.setVelocidad(velocidadRecomendada);
+    }
+}
+
+CLASE CHOFER
+public class Chofer extends Vehiculo {
+    private String nombre;
+    private String apellido;
+    private int dni;
+    private int salarioXkm;
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public int getDni() {
+        return dni;
+    }
+
+    public void setDni(int dni) {
+        this.dni = dni;
+    }
+
+    public int getSalarioXkm() {
+        return salarioXkm;
+    }
+
+    public void setSalarioXkm(int salarioXkm) {
+        this.salarioXkm = salarioXkm;
+    }
+
+    public Chofer(String modelo, EMarca marca, String patente, int velocidad, int kilimetraje, String nombre, String apellido, int dni, int salarioXkm) {
+        super(modelo, marca, patente, velocidad, kilimetraje);
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.salarioXkm = salarioXkm;
+    }
+
+    public Chofer() {
+        this.nombre = "nodefinido";
+        this.apellido = "nodefinido";
+        this.dni = 0;
+        this.salarioXkm = 0;
+    }
+}
+CLASE EMPRESARIAL
+public class Empresarial extends Vehiculo {
+    private int cantidadButacas;
+    private int anioAdqui;
+
+    public int getCantidadButacas() {
+        return cantidadButacas;
+    }
+
+    public void setCantidadButacas(int cantidadButacas) {
+        this.cantidadButacas = cantidadButacas;
+    }
+
+    public int getAnioAdqui() {
+        return anioAdqui;
+    }
+
+    public void setAnioAdqui(int anioAdqui) {
+        this.anioAdqui = anioAdqui;
+    }
+
+    public Empresarial(String modelo, EMarca marca, String patente, int velocidad, int kilimetraje, int cantidadButacas, int anioAdqui) {
+        super(modelo, marca, patente, velocidad, kilimetraje);
+        this.cantidadButacas = cantidadButacas;
+        this.anioAdqui = anioAdqui;
+    }
+
+    public Empresarial() {
+        this.cantidadButacas = 0;
+        this.anioAdqui = 0;
+    }
+}
+CLASE GESTOR VIAJES
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class GestorViajes {
+    private ArrayList <Vehiculo> autos = new ArrayList<>();
+    private ArrayList <Chofer> choferes = new ArrayList<>();
+    private ArrayList <Viaje> viajes = new ArrayList<>();
+
+    public void agregarVehiculo (Vehiculo a){
+        autos.add(a);
+    }
+
+    public void agregarChofer (Chofer a){
+        choferes.add(a);
+    }
+    public void agregarViajes (Viaje a){
+        viajes.add(a);
+    }
+
+}
+CLASE PASAJEROS
+public class TransportePasajeros extends Vehiculo implements iMantenimiento {
+    private int cantidadPasajeros;
+    private ECategoria categoria;
+
+    public int getCantidadPasajeros() {
+        return cantidadPasajeros;
+    }
+
+    public void setCantidadPasajeros(int cantidadPasajeros) {
+        this.cantidadPasajeros = cantidadPasajeros;
+    }
+
+    public ECategoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(ECategoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public TransportePasajeros(String modelo, EMarca marca, String patente, int velocidad, int kilimetraje, int cantidadPasajeros, ECategoria categoria) {
+        super(modelo, marca, patente, velocidad, kilimetraje);
+        this.cantidadPasajeros = cantidadPasajeros;
+        this.categoria = categoria;
+    }
+    public TransportePasajeros() {
+        this.cantidadPasajeros = 0;
+        this.categoria = ECategoria.STANDARD;
+    }
+
+    @Override
+    public void actualizar(int velocidadRecomendada, int kms, int cantidad) {
+        this.cantidadPasajeros = cantidad;
+        this.setKilimetraje(kms);
+        this.setVelocidad(velocidadRecomendada);
+    }
+
+}
+CLASE VEHICULO
+public abstract class Vehiculo  {
+    private String modelo;
+    private EMarca marca;
+    private String patente;
+    private int velocidad;
+    private int kilimetraje;
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public EMarca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(EMarca marca) {
+        this.marca = marca;
+    }
+
+    public String getPatente() {
+        return patente;
+    }
+
+    public void setPatente(String patente) {
+        this.patente = patente;
+    }
+
+    public int getVelocidad() {
+        return velocidad;
+    }
+
+    public void setVelocidad(int velocidad) {
+        this.velocidad = velocidad;
+    }
+
+    public int getKilimetraje() {
+        return kilimetraje;
+    }
+
+    public void setKilimetraje(int kilimetraje) {
+        this.kilimetraje = kilimetraje;
+    }
+
+    public Vehiculo(String modelo, EMarca marca, String patente, int velocidad, int kilimetraje) {
+        this.modelo = modelo;
+        this.marca = marca;
+        this.patente = patente;
+        this.velocidad = velocidad;
+        this.kilimetraje = kilimetraje;
+    }
+
+    public Vehiculo() {
+        this.modelo = "nodefinido";
+        this.marca = EMarca.CHEVROLET;
+        this.patente = "nodefinido";
+        this.velocidad = 0;
+        this.kilimetraje = 0;
+    }
+
+}
+CLASE VIAJE
+public class Viaje {
+
+    private int id = 0;
+    private String destino;
+    private int distancia;
+    private int tarifa;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public void setDestino(String destino) {
+        this.destino = destino;
+    }
+
+    public int getDistancia() {
+        return distancia;
+    }
+
+    public void setDistancia(int distancia) {
+        this.distancia = distancia;
+    }
+
+    public int getTarifa() {
+        return tarifa;
+    }
+
+    public void setTarifa(int tarifa) {
+        this.tarifa = tarifa;
+    }
+
+    public Viaje(int id, String destino, int distancia, int tarifa) {
+        this.id = id;
+        this.destino = destino;
+        this.distancia = distancia;
+        this.tarifa = tarifa;
+    }
+    public Viaje() {
+        this.id = 0;
+        this.destino = "nodefinido";
+        this.distancia = 0;
+        this.tarifa = 0;
+    }
+}
+ENUM CATEGORIA
+public enum ECategoria {
+    STANDARD,
+    PREMIUM,
+    DELUXE;
+}
+ENUM MARCA
+public enum EMarca {
+    FORD,
+    CHEVROLET,
+    DODGE,
+    JEEP;
+}
+ENUM UNIDAD
+public enum EUnidad {
+    KILOGRAMOS,
+    LITROS,
+    LIBRAS;
+}
+INTERFAZ MANTENIMIETNO
+public interface iMantenimiento {
+    public void actualizar(int velocidadRecomendada, int kms, int cantidad);
+}
